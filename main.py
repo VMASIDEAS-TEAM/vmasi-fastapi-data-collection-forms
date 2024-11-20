@@ -12,7 +12,7 @@ def get_form_service():
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello Vmas Ideas! Estoy activo..."}
 
 @app.post("/submit_form")
 async def submit_form(data: FormData, form_service: FormService = Depends(get_form_service)):
@@ -23,3 +23,15 @@ async def submit_form(data: FormData, form_service: FormService = Depends(get_fo
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error interno del servidor")
+
+@app.get("/get_forms")
+async def get_forms(form_service: FormService = Depends(get_form_service)):
+    try:
+        forms = form_service.get_all_forms()
+        if not forms:
+            return {"message": "No se encontraron datos en la base de datos", "data": []}
+        return {"message": "Datos recuperados con éxito", "data": forms}
+    except Exception as e:
+        print(f"Error al recuperar los datos: {e}")
+        raise HTTPException(status_code=500, detail="Error interno del servidor")
+

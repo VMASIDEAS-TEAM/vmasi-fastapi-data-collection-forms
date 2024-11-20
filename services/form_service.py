@@ -8,3 +8,6 @@ class FormService:
         if form_data["action"] != "saveForm":
             raise ValueError("Acción no soportada")
         return self.repository.save_form(form_data)
+
+    def get_all_forms(self):
+        return self.repository.get_all_forms()
